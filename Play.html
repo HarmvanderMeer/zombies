@@ -64,18 +64,18 @@
 		51.5710422177335 5.036450956860335 zombie.png
 		51.56972851579859 5.036526058712752 zombie.png`;
 		var markers = data.split("\n");
-		
+		//Old Marker Hero
+		var old_position = new google.maps.Marker({
+		  position: {lat: 51.561411, lng: 5.086190},
+		  map: zombie_map
+		});
 		function initMap() {
 				zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
-				zoom: 10,
+				zoom: 30,
 				center: {lat: 51.561411, lng: 5.086190}
 			});
 			
-			//Old Marker Hero
-			var old_position = new google.maps.Marker({
-				  position: {lat: 51.561411, lng: 5.086190},
-				  map: zombie_map
-				});
+			
 			//Place markers from data
 			for(var i=0; i < markers.length; i++){
 				var marker_data = markers[i].trim();
@@ -129,7 +129,7 @@
 			}
 		}
 	</script>
-	<!-- LET OP KEY IS IP BEVEILIGD -->
+	<!-- WARNING KEY IS SECURED BY DOMAIN -->
 	<script async defer
 	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuBPNSGSfe0KfHaid9Jw0qtvKX4UDLlYg&callback=initMap&libraries=geometry">
 	</script>
