@@ -1,0 +1,138 @@
+<html>
+  <head>
+    <title>My zombie map creator</title>
+	<style>
+	#zombie_map {
+		height: 100%;
+		width: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		background-color: grey;
+	}
+	</style>
+  </head>
+  <body>
+    <h1>Kill the zombies</h1>
+	<div id="zombie_map"></div>
+	<form>
+		
+	<script>
+		var zombie_map;
+		var old_position;
+		var tolerance;
+		var all_markers = [];
+		var data = `51.57030346899701 5.037546096350297 hospital.png
+		51.57116286166892 5.037938605450108 weapons.png
+		51.5706093791332 5.035213481090977 weapons.png
+		51.569075597137065 5.038421403072789 weapons.png
+		51.57176301583936 5.039837609432652 weapons.png
+		51.56965577293357 5.0415542232021835 weapons.png
+		51.56946612787063 5.033387227940011 weapons.png
+		51.569966275563125 5.034116788792062 zombie.png
+		51.57069314706678 5.034256263660836 zombie.png
+		51.56997294416187 5.035479350971627 zombie.png
+		51.571139933874974 5.035436435627389 zombie.png
+		51.571686741604694 5.035372062611032 zombie.png
+		51.57150669588341 5.036101623463082 zombie.png
+		51.57115327072713 5.037281795429635 zombie.png
+		51.57164006315283 5.0371745070690395 zombie.png
+		51.57195347469581 5.03816155998652 zombie.png
+		51.571760093360766 5.03891257851069 zombie.png
+		51.57146668562629 5.0396528681988 zombie.png
+		51.571500027509664 5.038966222690988 zombie.png
+		51.57117327599801 5.040425344395089 zombie.png
+		51.57049976037026 5.039964004444528 zombie.png
+		51.57031644495143 5.041884391793474 zombie.png
+		51.570789909383315 5.041079729089006 zombie.png
+		51.56904273446883 5.040661304482683 zombie.png
+		51.56908941558769 5.039094894417985 zombie.png
+		51.56832250541745 5.038869588860734 zombie.png
+		51.56883600322343 5.037367551812395 zombie.png
+		51.56842253791247 5.041337221154436 zombie.png
+		51.56946953148556 5.042903631219133 zombie.png
+		51.56950255223954 5.037010130212366 zombie.png
+		51.5692024612233 5.036259111688196 zombie.png
+		51.569069086802486 5.036302027032434 zombie.png
+		51.56918912379884 5.034327921197473 zombie.png
+		51.572376101785416 5.037165992112705 zombie.png
+		51.57283620841138 5.037638060899326 zombie.png
+		51.57189598555826 5.0407923387008395 zombie.png
+		51.570084758708624 5.042624336556287 zombie.png
+		51.569601811574216 5.037867163220199 zombie.png
+		51.57083549558043 5.038897131481917 zombie.png
+		51.5710422177335 5.036450956860335 zombie.png
+		51.56972851579859 5.036526058712752 zombie.png`;
+		var markers = data.split("\n");
+		
+		function initMap() {
+				zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
+				zoom: 10,
+				center: {lat: 51.561411, lng: 5.086190}
+			});
+			
+			//Old Marker Hero
+			var old_position = new google.maps.Marker({
+				  position: {lat: 51.561411, lng: 5.086190},
+				  map: zombie_map
+				});
+			//Place markers from data
+			for(var i=0; i < markers.length; i++){
+				var marker_data = markers[i].trim();
+				marker_data = marker_data.split(" ");
+				var latitude = marker_data[0];
+				var longitude = marker_data[1];
+				var emoji = marker_data[2];
+				var marker_position = new google.maps.LatLng(latitude, longitude);
+				var marker = new google.maps.Marker({
+				  position: marker_position,
+				  map: zombie_map,
+				  icon: emoji
+				});
+				all_markers.push(marker);
+			}
+			//SETUP THE USER
+			if(navigator.geolocation) {
+				navigator.geolocation.watchPosition(set_my_position);
+			}
+			else {
+				alert("Geolocation doesn't work in your browser");
+			}
+		}
+				
+		function set_my_position(position) {
+			//remove old hero marker
+			old_position.setMap(null);
+			//now move on
+			var latitude = position.coords.latitude;
+			var longitude = position.coords.longitude;
+			var emoji = "superhero.png";
+			var marker_position = new google.maps.LatLng(latitude, longitude);
+			var marker = new google.maps.Marker({
+			  position: marker_position,
+			  map: zombie_map,
+			  icon: emoji
+			});
+			//update the old posistion for next loop
+			old_position = hero;
+			for(var i=0; i < all_markers.length; i++){
+				var distance = google.maps.geometry.spherical.computeDistanceBetween(pos, all_markers[i].getPosition());
+				if( distance < tolerance ){
+					var what_is_it = all_markers[i].getIcon();
+					what_is_it = what_is_it.replace(".png", "");
+					alert("Found the " + what_is_it );
+					//start battle / animation
+					//remove marker
+					all_markers[i].setMap(null);
+					//add count kill, ammo, health
+				}
+			}
+		}
+	</script>
+	<!-- LET OP KEY IS IP BEVEILIGD -->
+	<script async defer
+	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuBPNSGSfe0KfHaid9Jw0qtvKX4UDLlYg&callback=initMap&libraries=geometry">
+	</script>
+	
+  </body>
+</html>

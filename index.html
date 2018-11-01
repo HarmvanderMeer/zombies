@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>My zombie map creator</title>
+	<style>
+	#zombie_map {
+		width: 600px;
+		height: 400px;
+		background-color: grey;
+	}
+	</style>
+  </head>
+  <body>
+    <h1>My zombie map creator</h1>
+	<div id="zombie_map"></div>
+	<form>
+	<h2>Select an emoji</h2>
+	<select id="icon_to_use">
+	  <option value="zombie.png">Zombie</option>
+	  <option value="hospital.png">Hospital</option>
+	  <option value="weapons.png">Weapons</option>
+	</select>
+	</form>
+	
+	<script>
+		var zombie_map;
+		function initMap() {
+				zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
+				zoom: 10,
+				center: {lat: 51.561411, lng: 5.086190}
+			});
+			function place_marker(location){
+				//own icons
+				var emoji = document.getElementById('icon_to_use').value;
+				var marker = new google.maps.Marker({
+				  position: location,
+				  map: zombie_map,
+				  icon: emoji
+				});
+				//Use Javascript console to keep tracks
+				console.log(location.lat() + ' ' + location.lng() + ' ' + emoji );
+			}
+			zombie_map.addListener('click', function(e) {
+			  var location = e.latLng;
+			  place_marker(location);
+			});
+		}
+				
+		
+	</script>
+	<!-- LET OP KEY IS IP BEVEILIGD -->
+	<script async defer
+	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuBPNSGSfe0KfHaid9Jw0qtvKX4UDLlYg&callback=initMap">
+	</script>
+	
+  </body>
+</html>
