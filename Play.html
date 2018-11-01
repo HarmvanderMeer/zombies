@@ -65,17 +65,17 @@
 		51.56972851579859 5.036526058712752 zombie.png`;
 		var markers = data.split("\n");
 		//Old Marker Hero
-		var old_position = new google.maps.Marker({
-		  position: {lat: 51.561411, lng: 5.086190 },
-		  map: zombie_map
-		});
+		
 		function initMap() {
 				zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
 				zoom: 30,
 				center: {lat: 51.561411, lng: 5.086190}
 			});
 			
-			
+			var old_position = new google.maps.Marker({
+			  position: {lat: 51.561411, lng: 5.086190 },
+			  map: zombie_map
+			});
 			//Place markers from data
 			for(var i=0; i < markers.length; i++){
 				var marker_data = markers[i].trim();
